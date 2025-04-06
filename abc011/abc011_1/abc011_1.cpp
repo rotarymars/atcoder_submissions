@@ -12,7 +12,6 @@ signed main() {
   return 0;
 }
 #else
-
 using namespace std;
 #ifdef _DEBUG
 #define DPln(x) cout << #x << " = " << x << "\n"
