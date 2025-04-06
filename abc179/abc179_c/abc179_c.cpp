@@ -1,33 +1,17 @@
 #ifndef MAIN_INCLUDED
 #define MAIN_INCLUDED 1
 #include __FILE__
-int main() {
+signed main() {
   cin.tie(nullptr);
   ios_base::sync_with_stdio(false);
   int n;
   cin >> n;
-  int cnt = 0;
+  int ans = 0;
   for (size_t i = 1; i < n; i++)
   {
-    bool isover = false;
-    for (size_t j = 1; j < n; j++)
-    {
-      if (i * j < n)
-      {
-        ++cnt;
-      }
-      else
-      {
-        isover = 1;
-        break;
-      }
-    }
-    if (isover)
-    {
-      continue;
-    }
+    ans += (n - 1) / i;
   }
-  cout << cnt << endl;
+  cout << ans << endl;
   return 0;
 }
 #else
@@ -214,13 +198,26 @@ void PRINT2D(T a) {
   {
     for (size_t j = 0; j < a[i].size(); j++)
     {
-      if (j == 0)
+      cout << a[i][j];
+    }
+    cout << "\n";
+  }
+}
+
+template <class T>
+void PRINT2DSP(T a) {
+  cout << "\n";
+  for (size_t i = 0; i < a.size(); i++)
+  {
+    for (size_t j = 0; j < a[i].size(); j++)
+    {
+      if (j == 0)[[unlikely]]
       {
-        cout << a[j];
-      }
+        cout << a[i][j];
+        }
       else
       {
-        cout << " " << a[j];
+        cout << " " << a[i][j];
       }
     }
     cout << "\n";
