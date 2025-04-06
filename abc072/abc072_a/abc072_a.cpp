@@ -6,12 +6,18 @@ signed main() {
   ios_base::sync_with_stdio(false);
   int x, t;
   cin >> x >> t;
-  cout << (x - t >= 0 ? x - t : 0) << endl;
+  if (x - t > 0) cout << x - t << endl;
+  else cout << "0\n";
   return 0;
 }
 #else
 
 using namespace std;
+#ifdef _DEBUG
+#define DPln(x) cout << #x << " = " << x << "\n"
+#else
+#define DPln(x) ;
+#endif
 #include <iostream>
 #include <algorithm>
 #include <string>
@@ -25,6 +31,7 @@ using namespace std;
 #include <iomanip>
 #include <regex>
 #include <numeric>
+#include <bit>
 #include <cassert>
 #if __has_include(<atcoder/all>)
 #include <atcoder/all>
@@ -83,11 +90,15 @@ void YES() {
 void NO() {
   cout << "NO\n";
 }
-template<class T>
+template<class T = int>
 T I() {
   T tmp;
   cin >> tmp;
   return tmp;
+}
+template<class T>
+T RUD(T a, T b) {
+  return ((a + b - (T)1) / b);
 }
 int COTONUM(const int x, const int y, const int w) {
   return (x * w) + y;
@@ -320,6 +331,38 @@ void PRINT2DSP(T a) {
     }
     cout << "\n";
   }
+}
+template<class T>
+istream &operator>>(istream& in, vector<T> &v) {
+  for (T& i : v) {
+    in >> i;
+  }
+  return in;
+}
+template<class T>
+ostream &operator<<(ostream& out, vector<T> &v) {
+  for (size_t i = 0; i < v.size(); i++) {
+    if (i == 0) out << v[i];
+    else out << " " << v[i];
+  }
+  return out;
+}
+template<class T, class U>
+istream& operator>>(istream& in, pair<T, U> &p) {
+  in >> p.first >> p.second;
+  return in;
+}
+template<class T, class U>
+ostream& operator<<(ostream& out, pair<T, U> &p) {
+  out << p.first << " " <<  p.second;
+  return out;
+}
+template<class T, class U>
+ostream& operator<<(ostream& out, vector<pair<T, U>> &p) {
+  for (auto& [__FIRST, __SECOND] : p) {
+    out << __FIRST << " " << __SECOND << "\n";
+  }
+  return out;
 }
 #endif
 /*
