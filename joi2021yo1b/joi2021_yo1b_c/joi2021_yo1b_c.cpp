@@ -14,6 +14,10 @@ int main() {
   auto it = max_element(VALL(a));
   auto itcopy = it;
   //PRINT1D(a);
+  for (size_t i = 0; i < 1e4; i++)
+  {
+    clog << "a\n";
+  }
   cout << accumulate(a.begin(), it, 0) << endl << accumulate(it + 1, a.end(), 0) << endl;
   return 0;
 }
