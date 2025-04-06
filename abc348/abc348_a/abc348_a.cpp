@@ -1,9 +1,13 @@
 #include <iostream>
+#include <vector>
 using namespace std;
-template<typename T>
-T I(){ T a; cin >> a; return a;}
-int main(){
-  int n = I<int>();
-  for (int i = 1; i <= n; i++) cout << ((i % 3) ? 'o': 'x');
-  cout << endl;
+signed main()
+{
+    cin.tie(nullptr);
+    ios_base::sync_with_stdio(false);
+    int n;
+    cin>>n;
+    for(int i=1;i<=n;i++)cout<<(i%3?'o':'x');
+    cout<<endl;
+    return 0;
 }
