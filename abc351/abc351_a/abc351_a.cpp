@@ -12,4 +12,7 @@ int main(){
 		b += tmp;
 	}
 	cout << a - b + 1 << endl;
+	#ifdef _DEBUG
+	cout << "DEBUG\n";
+	#endif // _DEBUG
 }
