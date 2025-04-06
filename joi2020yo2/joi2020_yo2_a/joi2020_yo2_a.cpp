@@ -1,32 +1,81 @@
-#include <bits/stdc++.h>
-#define SIZE 505
-using namespace std;
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
 
-char S[SIZE][SIZE];
-char T[SIZE][SIZE];
-char nxt[SIZE][SIZE];
+using namespace std;
 
 int main()
 {
-	int n;
-	scanf("%d",&n);
-	for(int i=0;i<n;i++) scanf("%s",&S[i]);
-	for(int i=0;i<n;i++) scanf("%s",&T[i]);
-	int ret=n*n;
-	for(int i=0;i<4;i++)
-	{
-		int cnt=min(i,4-i);
-		for(int x=0;x<n;x++)
-		{
-			for(int y=0;y<n;y++)
-			{
-				if(S[x][y]!=T[x][y]) cnt++;
-			}
-		}
-		ret=min(ret,cnt);
-		for(int x=0;x<n;x++) for(int y=0;y<n;y++) nxt[y][n-x-1]=S[x][y];
-		for(int x=0;x<n;x++) for(int y=0;y<n;y++) S[x][y]=nxt[x][y];
-	}
-	printf("%d\n",ret);
-	return 0;
+    cin.tie(nullptr);
+    ios_base::sync_with_stdio(false);
+
+    // write code here
+    int n;
+    cin >> n;
+    vector<vector<char>> first_poster(n, vector<char>(n));
+    vector<vector<char>> ans_poster(n, vector<char>(n));
+    for (size_t i = 0; i < n; ++i)
+    {
+      string memory;
+      cin >> memory;
+      for (size_t j = 0; j < n; ++j)
+      {
+        first_poster[i][j] = memory[j];
+      }
+    }
+    for (size_t i = 0; i < n; ++i)
+    {
+      string memory;
+      cin >> memory;
+      for (size_t j = 0; j < n; ++j)
+      {
+        ans_poster[i][j] = memory[j];
+      }
+    }
+    vector<vector<char>> one_clockwize_poster(n, vector<char>(n));
+    vector<vector<char>> two_clockwize_poster(n, vector<char>(n));
+    vector<vector<char>> one_anticlockwize_poster(n, vector<char>(n));
+    for (int i = 1; i <= n; ++i) {
+      for (int j = 1; j <= n; ++j) {
+        one_clockwize_poster[(j) - 1][(n - i + 1) - 1] = first_poster[(i) - 1][(j) - 1];
+        two_clockwize_poster[(n - i + 1) - 1][(n - j + 1) - 1] = first_poster[(i) - 1][(j) - 1];
+        one_anticlockwize_poster[(n - j + 1) - 1][(i) - 1] = first_poster[(i) - 1][(j) - 1];
+      }
+    }
+    int one_clockwize_poster_nonsame = 0, two_clockwize_poster_nonsame = 0, one_anticlockwize_poster_nonsame = 0, no_turn_poster_nonsame = 0;
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < n; ++j) {
+        if (ans_poster[i][j] != one_clockwize_poster[i][j]) {
+          ++one_clockwize_poster_nonsame;
+        }
+        if (ans_poster[i][j] != two_clockwize_poster[i][j]) {
+          ++two_clockwize_poster_nonsame;
+        }
+        if (ans_poster[i][j] != one_anticlockwize_poster[i][j]) {
+          ++one_anticlockwize_poster_nonsame;
+        }
+        if (ans_poster[i][j] != first_poster[i][j]) {
+          ++no_turn_poster_nonsame;
+        }
+      }
+    }
+    int count = 0;
+    if (no_turn_poster_nonsame <= one_clockwize_poster_nonsame && no_turn_poster_nonsame <= two_clockwize_poster_nonsame && no_turn_poster_nonsame <= one_anticlockwize_poster_nonsame) {
+      cout << no_turn_poster_nonsame << "\n";
+      ++count;
+    }
+    else if (one_clockwize_poster_nonsame <= two_clockwize_poster_nonsame && one_clockwize_poster_nonsame <= one_anticlockwize_poster_nonsame && count == 0) {
+      cout << 1 + one_clockwize_poster_nonsame << "\n";
+      ++count;
+    }
+    else if (one_anticlockwize_poster_nonsame <= one_clockwize_poster_nonsame && one_anticlockwize_poster_nonsame <= two_clockwize_poster_nonsame && count == 0) {
+      cout << 1 + one_anticlockwize_poster_nonsame << "\n";
+      ++count;
+    }
+    else if (two_clockwize_poster_nonsame <= one_clockwize_poster_nonsame && two_clockwize_poster_nonsame <= one_anticlockwize_poster_nonsame && count == 0) {
+      cout << 2 + two_clockwize_poster_nonsame << "\n";
+      ++count;
+    }
+    return 0;
 }
