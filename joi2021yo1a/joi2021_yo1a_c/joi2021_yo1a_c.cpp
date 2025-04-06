@@ -1,33 +1,26 @@
-#include <string>
-#include <algorithm>
-#include <vector>
 #include <iostream>
+#include <set>
+#include <vector>
 using namespace std;
 int main(){
   int n, m;
   cin >> n >> m;
-  vector<int> a(n);
-  vector<int> b(m);
-  vector<int> c;
+  set<int> a, b;
+  int mem;
   for(int i = 0; i < n; ++i){
-    cin >> a[i];
+    cin >> mem;
+    a.insert(mem);
   }
   for(int i = 0; i < m; ++i){
-    cin >> b[i];
+    cin >> mem;
+    b.insert(mem);
   }
-  sort(a.begin(), a.end());
-  sort(b.begin(), b.end());
-  a.erase(unique(a.begin(), a.end()), a.end());
-  b.erase(unique(b.begin(), b.end()), b.end());
-  for(int i = 0; i < a.size(); ++i){
-    for(int j = 0; j < b.size(); ++j){
-      if(a[i] == b[j]){
-        c.push_back(a[i]);
+  for(auto i = a.begin(); i != a.end(); ++i){
+    for(auto j = b.begin(); j != b.end(); ++j){
+      if(*i == *j){
+        cout << *i << "\n";
       }
     }
-  }
-  for(int i = 0; i < c.size(); ++i){
-    cout << c[i] << "\n";
   }
   return 0;
 }
