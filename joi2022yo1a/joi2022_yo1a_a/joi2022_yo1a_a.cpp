@@ -9,8 +9,10 @@ int main(){
     x += (nowchar - '0');
   }
   x %= 21;
-  string mys = to_string(x);
-  for (int i = 0; i < mys.size(); i++){
-    putchar(mys[i]);
+  if (x >= 10){
+    putchar(x / 10 + '0');
+    putchar(x % 10 + '0');
+  }else {
+    putchar(x + '0');
   }
 }
