@@ -5,55 +5,29 @@ signed main() {
   cin.tie(nullptr);
   ios_base::sync_with_stdio(false);
   int n, m, h, k;
-  cin >> n >> m >> h >> k;
   string s;
-  cin >> s;
-  PII nowcor = { 0, 0 };
-  set<PII> a;
-  for (size_t i = 0; i < m; i++)
-  {
+  set<pair<int, int>> se;
+  cin >> n >> m >> h >> k >> s;
+  for (; m; m--) {
     int x, y;
     cin >> x >> y;
-    a.insert({ x, y });
+    se.insert(make_pair(x, y));
   }
-#ifdef _DEBUG
-  cout << endl << endl;
-#endif // _DEBUG
-
-  int hp = h;
-  for (size_t i = 0; i < s.size(); i++)
-  {
-    if (s[i] == 'R')
-    {
-      nowcor = { nowcor.first + 1, nowcor.second };
-    }
-    else if (s[i] == 'L')
-    {
-      nowcor = { nowcor.first - 1, nowcor.second };
-    }
-    else if (s[i] == 'D')
-    {
-      nowcor = { nowcor.first, nowcor.second - 1 };
-    }
-    else
-    {
-      nowcor = { nowcor.first, nowcor.second + 1 };
-    }
-    --hp;
-#ifdef _DEBUG
-    cout << nowcor.first << " " << nowcor.second << endl << hp << endl;
-#endif // _DEBUG
-    if (hp < 0)
-    {
+  pair<int, int> nowco = make_pair(0, 0);
+  for (int i = 0; i < n; i++) {
+    if (s[i] == 'R') nowco.first++;
+    if (s[i] == 'L') nowco.first--;
+    if (s[i] == 'U') nowco.second++;
+    if (s[i] == 'D') nowco.second--;
+    h--;
+    if (h < 0) {
       No();
       return 0;
     }
-    if (a.contains(nowcor) && hp < k)
-    {
-      hp = k;
-      a.erase(nowcor);
+    if (se.contains(nowco) && h < k) {
+      h = k;
+      se.erase(nowco);
     }
-    
   }
   Yes();
   return 0;
@@ -61,6 +35,11 @@ signed main() {
 #else
 
 using namespace std;
+#ifdef _DEBUG
+#define DPln(x) cout << #x << " = " << x << "\n"
+#else
+#define DPln(x) ;
+#endif
 #include <iostream>
 #include <algorithm>
 #include <string>
@@ -74,6 +53,8 @@ using namespace std;
 #include <iomanip>
 #include <regex>
 #include <numeric>
+#include <bit>
+#include <cassert>
 #if __has_include(<atcoder/all>)
 #include <atcoder/all>
 #endif
@@ -113,6 +94,38 @@ namespace {
   using QI = queue<int>;
   using QLL = queue<LL>;
 }
+template<class T>
+istream& operator>>(istream& in, vector<T>& v) {
+  for (T& i : v) {
+    in >> i;
+  }
+  return in;
+}
+template<class T>
+ostream& operator<<(ostream& out, vector<T>& v) {
+  for (size_t i = 0; i < v.size(); i++) {
+    if (i == 0) out << v[i];
+    else out << " " << v[i];
+  }
+  return out;
+}
+template<class T, class U>
+istream& operator>>(istream& in, pair<T, U>& p) {
+  in >> p.first >> p.second;
+  return in;
+}
+template<class T, class U>
+ostream& operator<<(ostream& out, pair<T, U>& p) {
+  out << p.first << " " << p.second;
+  return out;
+}
+template<class T, class U>
+ostream& operator<<(ostream& out, vector<pair<T, U>>& p) {
+  for (auto& [__FIRST, __SECOND] : p) {
+    out << __FIRST << " " << __SECOND << "\n";
+  }
+  return out;
+}
 void Yes() {
   cout << "Yes\n";
 }
@@ -130,6 +143,16 @@ void YES() {
 }
 void NO() {
   cout << "NO\n";
+}
+template<class T = int>
+T I() {
+  T tmp;
+  cin >> tmp;
+  return tmp;
+}
+template<class T>
+T RUD(T a, T b) {
+  return ((a + b - (T)1) / b);
 }
 int COTONUM(const int x, const int y, const int w) {
   return (x * w) + y;
@@ -351,9 +374,9 @@ void PRINT2DSP(T a) {
   {
     for (size_t j = 0; j < a[i].size(); j++)
     {
-      if (j == 0)[[unlikely]]
-      {
-        cout << a[i][j];
+      if (j == 0) [[unlikely]]
+        {
+          cout << a[i][j];
         }
       else
       {
@@ -363,6 +386,155 @@ void PRINT2DSP(T a) {
     cout << "\n";
   }
 }
+
+class DSU {
+public:
+  DSU() : _n(0) {}
+  explicit DSU(int n) : _n(n), parent_or_size(n, -1) {}
+
+  int merge(int a, int b) {
+    int x = leader(a), y = leader(b);
+    if (x == y) return x;
+    if (-parent_or_size[x] < -parent_or_size[y]) std::swap(x, y);
+    parent_or_size[x] += parent_or_size[y];
+    parent_or_size[y] = x;
+    return x;
+  }
+
+  bool same(int a, int b) {
+    return leader(a) == leader(b);
+  }
+
+  int leader(int a) {
+    if (parent_or_size[a] < 0) return a;
+    return parent_or_size[a] = leader(parent_or_size[a]);
+  }
+
+  int size(int a) {
+    return -parent_or_size[leader(a)];
+  }
+
+  vector<vector<int>> to_vector() {
+    vector<int> leader_buf(_n), group_size(_n);
+    for (int i = 0; i < _n; i++) {
+      leader_buf[i] = leader(i);
+      group_size[leader_buf[i]]++;
+    }
+    vector<vector<int>> result(_n);
+    for (int i = 0; i < _n; i++) {
+      result[i].reserve(group_size[i]);
+    }
+    for (int i = 0; i < _n; i++) {
+      result[leader_buf[i]].push_back(i);
+    }
+    result.erase(
+        remove_if(result.begin(), result.end(),
+          [&](const vector<int>& v) { return v.empty(); }),
+        result.end());
+    return result;
+  }
+private:
+  int _n;
+  vector<int> parent_or_size;
+};
+template <class S, S(*op)(S, S), S(*e)()>
+class SEGTREE {
+public:
+  SEGTREE() : SEGTREE(0) {}
+  explicit SEGTREE(int n) : SEGTREE(vector<S>(n, e())) {}
+  explicit SEGTREE(const vector<S>& v) : _n(int(v.size())) {
+    size = (int)bit_ceil((unsigned int)(_n));
+    log = countr_zero((unsigned int)size);
+    d = std::vector<S>(2 * size, e());
+    for (int i = 0; i < _n; i++) d[size + i] = v[i];
+    for (int i = size - 1; i >= 1; i--) {
+      update(i);
+    }
+  }
+
+  void set(int p, S x) {
+    p += size;
+    d[p] = x;
+    for (int i = 1; i <= log; i++) update(p >> i);
+  }
+
+  S get(int p) const {
+    return d[p + size];
+  }
+
+  S prod(int l, int r) const {
+    S sml = e(), smr = e();
+    l += size;
+    r += size;
+
+    while (l < r) {
+      if (l & 1) sml = op(sml, d[l++]);
+      if (r & 1) smr = op(d[--r], smr);
+      l >>= 1;
+      r >>= 1;
+    }
+    return op(sml, smr);
+  }
+
+  S all_prod() const { return d[1]; }
+
+  template <bool (*f)(S)> int max_right(int l) const {
+    return max_right(l, [](S x) { return f(x); });
+  }
+  template <class F> int max_right(int l, F f) const {
+    if (l == _n) return _n;
+    l += size;
+    S sm = e();
+    do {
+      while (l % 2 == 0) l >>= 1;
+      if (!f(op(sm, d[l]))) {
+        while (l < size) {
+          l = (2 * l);
+          if (f(op(sm, d[l]))) {
+            sm = op(sm, d[l]);
+            l++;
+          }
+        }
+        return l - size;
+      }
+      sm = op(sm, d[l]);
+      l++;
+    } while ((l & -l) != l);
+    return _n;
+  }
+
+  template <bool (*f)(S)> int min_left(int r) const {
+    return min_left(r, [](S x) { return f(x); });
+  }
+  template <class F> int min_left(int r, F f) const {
+    if (r == 0) return 0;
+    r += size;
+    S sm = e();
+    do {
+      r--;
+      while (r > 1 && (r % 2)) r >>= 1;
+      if (!f(op(d[r], sm))) {
+        while (r < size) {
+          r = (2 * r + 1);
+          if (f(op(d[r], sm))) {
+            sm = op(d[r], sm);
+            r--;
+          }
+        }
+        return r + 1 - size;
+      }
+      sm = op(d[r], sm);
+    } while ((r & -r) != r);
+    return 0;
+  }
+
+private:
+  int _n, size, log;
+  vector<S> d;
+
+  void update(int k) { d[k] = op(d[2 * k], d[2 * k + 1]); }
+};
+
 #endif
 /*
                    _ooOoo_
