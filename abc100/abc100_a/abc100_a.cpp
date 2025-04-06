@@ -8,8 +8,5 @@ signed main()
     cin>>a>>b;
     if(a<=8&&b<=8)cout<<"Yay!\n";
     else cout<<":(\n";
-    #ifdef _DEBUG
-    cout<<"Hello,World!\n";
-    #endif
     return 0;
 }
