@@ -1,9 +1,16 @@
+#ifndef ATCODER_DSU_HPP
+#define ATCODER_DSU_HPP 1
 #include <iostream>
 #include <algorithm>
 #include <cassert>
 #include <vector>
-#include <iostream>
+
 namespace ALG {
+
+// Implement (union by size) + (path compression)
+// Reference:
+// Zvi Galil and Giuseppe F. Italiano,
+// Data structures and algorithms for disjoint set union problems
 struct dsu {
   public:
     dsu() : _n(0) {}
@@ -59,14 +66,16 @@ struct dsu {
 
   private:
     int _n;
+    // root node: -1 * component size
+    // otherwise: parent
     std::vector<int> parent_or_size;
 };
 
-}
+}  // namespace atcoder
 
+#endif  // ATCODER_DSU_HPP
 
 using namespace std;
-
 int main(){
   int n, q, t, u, v;
   cin >> n >> q;
