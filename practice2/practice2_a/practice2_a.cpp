@@ -11,7 +11,7 @@
 #include <cassert>
 #include <vector>
 
-namespace s {
+namespace ALG {
 
 // Implement (union by size) + (path compression)
 // Reference:
@@ -91,7 +91,7 @@ int main()
   // write code here
   int n, q, t, u, v;
   cin >> n >> q;
-  s::dsu a(n);
+  ALG::dsu a(n);
   for (size_t i = 0; i < q; ++i)
   {
     cin >> t >> u >> v;
