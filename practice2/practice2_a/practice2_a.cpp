@@ -373,17 +373,15 @@ ostream& operator<<(ostream& out, vector<int>& v) {
   for (auto& i : v) out << i << " ";
   return out;
 }
+
 class DSU {
 private:
   vector<int> parent;
 public:
   DSU(int n) : parent(n) { iota(parent.begin(), parent.end(), 0); };
   int leader(int a) {
-    int tmp = parent[a];
-    while (tmp != parent[tmp]) {
-      tmp = parent[tmp];
-    }
-    return tmp;
+    if (parent[a] == a) return a;
+    return parent[a] = DSU::leader(parent[a]);
   }
   int merge(int a, int b) {
     parent[DSU::leader(a)] = parent[DSU::leader(b)] = DSU::leader(a);
@@ -406,7 +404,6 @@ public:
     return parent;
   }
 };
-
 
 #endif
 /*
