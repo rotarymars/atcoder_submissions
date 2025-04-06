@@ -1,18 +1,18 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
-int main(){
-  int n;
-  cin >> n;
-  int backnum = n % 10;
-  n /= 10;
-  while (n){
-    if (backnum < n % 10){
-      backnum = n % 10;
-      n /= 10;
-      continue;
+signed main()
+{
+    cin.tie(nullptr);
+    ios_base::sync_with_stdio(false);
+    string s;
+    cin>>s;
+    for(int i=1;i<s.size();i++){
+        if(!(s[i] < s[i-1])){
+            cout<<"No\n";
+            return 0;
+        }
     }
-    cout << "No\n";
+    cout<<"Yes\n";
     return 0;
-  }
-  cout << "Yes\n";
 }
