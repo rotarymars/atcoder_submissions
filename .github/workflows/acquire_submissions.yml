@@ -1,0 +1,43 @@
+name: Acquire Submissions
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 15 * * *'
+
+jobs:
+  acquire_submissions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Clone external repo
+        run: |
+          git clone https://github.com/rotarymars/atcoder_autoacquisition.git
+
+      - name: Move files
+        run: |
+          mv atcoder_autoacquisition/* .
+          rm -r atcoder_autoacquisition
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || true
+
+      - name: Run main.py
+        run: python main.py
+
+      - name: Commit and push changes if any
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "Auto commit from GitHub Actions"
+          git push
