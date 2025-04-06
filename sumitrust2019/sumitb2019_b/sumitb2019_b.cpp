@@ -1,14 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int main(){
+int main() {
   long long n;
   cin >> n;
 
-  for(int i=0; i<=n; ++i){
-    long double j=i*1.08;
+  for (int i = 0; i <= n; ++i) {
+    long double j = i * 1.08;
     int answer = j;
-    if(answer==n){
+    if (answer == n) {
       cout << i << endl;
       return 0;
     }
