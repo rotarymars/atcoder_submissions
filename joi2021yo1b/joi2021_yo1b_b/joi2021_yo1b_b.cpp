@@ -1,36 +1,19 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <regex>
+#ifdef _DEBUG
+#define DP(x) cout << #x << " = " << x << endl
+#else
+#define DP(x) ;
+#endif
 using namespace std;
-int main(){
-  int n;
-  string s;
-  cin >> n >> s;
-  int firstnum = -1, secondnum = -1;
-  for (int i = 0; i < n; i++){
-    if (s[i] == 'I'){
-      firstnum = i;
-      break;
-    }
-  }
-  if (firstnum == -1){
-    cout << "No\n";
+signed main()
+{
+    cin.tie(nullptr);
+    ios_base::sync_with_stdio(false);
+    string s;
+    cin>>s>>s;
+    if(regex_match(s,regex(".*I.*O.*I.*")))cout<<"Yes\n";
+    else cout<<"No\n";
     return 0;
-  }
-  for (int i = firstnum; i < n; i++){
-    if (s[i] == 'O'){
-      secondnum = i;
-      break;
-    }
-  }
-  if (secondnum == -1){
-    cout << "No\n";
-    return 0;
-  }
-  for (int i = secondnum; i < n; i++){
-    if (s[i] == 'I'){
-      cout << "Yes\n";
-      return 0;
-    }
-  }
-  cout << "No\n";
-  return 0;
 }
