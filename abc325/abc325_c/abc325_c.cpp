@@ -8,28 +8,19 @@ signed main() {
   cin >> h >> w;
   vector<string> grid(h);
   cin >> grid;
+  DSU d(h * w);
   vector<int> gh{ -1, -1, -1, 0, 1, 1, 1, 0 }, gw{ -1, 0, 1, 1, 1, 0, -1, -1 };
-  int ans = 0;
   for (int i = 0; i < h; i++) for (int j = 0; j < w; j++) {
-    if (grid[i][j] == '.') continue;
-    ans++;
-    stack<int> que;
-    que.push(COTONUM(i, j, w));
-    grid[i][j] = '.';
-    while (!que.empty()) {
-      pair<int, int> nowco = NUMTOCO(que.top(), w);
-      grid[nowco.first][nowco.second] = '.';
-      que.pop();
-      for (int k = 0; k < 8; k++) {
-        if (INRANGE(0, h - 1, nowco.first + gh[k]) && INRANGE(0, w - 1, nowco.second + gw[k])) if (grid[nowco.first + gh[k]][nowco.second + gw[k]] == '#') {
-          que.push(COTONUM(nowco.first + gh[k], nowco.second + gw[k], w));
-          grid[nowco.first + gh[k]][nowco.second + gw[k]] = '.';
-        }
-      }
+    for (int k = 0; k < 8; k++) {
+      if (INRANGE(0, h - 1, i + gh[k]) && INRANGE(0, w - 1, j + gw[k])) if (grid[i + gh[k]][j + gw[k]] == grid[i][j]) d.merge(COTONUM(i + gh[k], j + gw[k], w), COTONUM(i, j, w));
     }
-#ifdef _DEBUG
-    for (int i = 0; i < h; i++) cout << grid[i] << "\n";
-#endif
+  }
+  auto v = d.to_vector();
+  int ans = 0;
+  DPln(v);
+  for (auto& i : v) {
+    auto p = NUMTOCO(i[0], w);
+    if (grid[p.first][p.second] == '#') ++ans;
   }
   cout << ans << endl;
   return 0;
@@ -388,41 +379,56 @@ void PRINT2DSP(T a) {
     cout << "\n";
   }
 }
+
 class DSU {
-private:
-  vector<int> parent;
 public:
-  DSU(int n) : parent(n) { iota(parent.begin(), parent.end(), 0); };
-  int leader(int a) {
-    vector<int> to_change;
-    int tmp = parent[a];
-    while (tmp != parent[tmp]) {
-      to_change.push_back(tmp);
-      tmp = parent[tmp];
-    }
-    for (int& i : to_change) parent[i] = tmp;
-    return tmp;
-  }
+  DSU() : _n(0) {}
+  explicit DSU(int n) : _n(n), parent_or_size(n, -1) {}
+
   int merge(int a, int b) {
-    parent[DSU::leader(a)] = parent[DSU::leader(b)] = DSU::leader(a);
-    return DSU::leader(a);
+    int x = leader(a), y = leader(b);
+    if (x == y) return x;
+    if (-parent_or_size[x] < -parent_or_size[y]) std::swap(x, y);
+    parent_or_size[x] += parent_or_size[y];
+    parent_or_size[y] = x;
+    return x;
   }
-  void _LINK_LEADER() {
-    for (int i = 0; i < parent.size(); i++) parent[i] = DSU::leader(i);
+
+  bool same(int a, int b) {
+    return leader(a) == leader(b);
   }
-  vector<vector<int>> to_vector() {
-    map<int, int> m;
-    for (int i = 0; i < parent.size(); i++) m[DSU::leader(i)] = i;
-    for (auto i = m.begin(); i != m.end(); i++) i->second = distance(m.begin(), i);
-    vector<vector<int>> ret(m.size());
-    for (int i = 0; i < parent.size(); i++) {
-      ret[m[DSU::leader(i)]].push_back(i);
+
+  int leader(int a) {
+    if (parent_or_size[a] < 0) return a;
+    return parent_or_size[a] = leader(parent_or_size[a]);
+  }
+
+  int size(int a) {
+    return -parent_or_size[leader(a)];
+  }
+
+  std::vector<std::vector<int>> to_vector() {
+    std::vector<int> leader_buf(_n), group_size(_n);
+    for (int i = 0; i < _n; i++) {
+      leader_buf[i] = leader(i);
+      group_size[leader_buf[i]]++;
     }
-    return ret;
+    std::vector<std::vector<int>> result(_n);
+    for (int i = 0; i < _n; i++) {
+      result[i].reserve(group_size[i]);
+    }
+    for (int i = 0; i < _n; i++) {
+      result[leader_buf[i]].push_back(i);
+    }
+    result.erase(
+        std::remove_if(result.begin(), result.end(),
+          [&](const std::vector<int>& v) { return v.empty(); }),
+        result.end());
+    return result;
   }
-  vector<int> parentcopy() {
-    return parent;
-  }
+private:
+  int _n;
+  std::vector<int> parent_or_size;
 };
 template <class S, S(*op)(S, S), S(*e)()>
 class SEGTREE {
