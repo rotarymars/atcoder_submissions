@@ -14,7 +14,7 @@ int main() {
   auto it = max_element(VALL(a));
   auto itcopy = it;
   //PRINT1D(a);
-  for (size_t i = 0; i < 1e5; i++)
+  for (size_t i = 0; i < 1e6; i++)
   {
     clog << "a";
   }
