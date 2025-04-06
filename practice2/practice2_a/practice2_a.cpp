@@ -3,7 +3,6 @@
 #include <cassert>
 #include <vector>
 #include <iostream>
-using namespace std;
 namespace ALG {
 struct dsu {
   public:
@@ -63,7 +62,10 @@ struct dsu {
     std::vector<int> parent_or_size;
 };
 
-}  
+}
+
+
+using namespace std;
 
 int main(){
   int n, q, t, u, v;
