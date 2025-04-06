@@ -13,11 +13,11 @@ signed main() {
   for (int i = 0; i < h; i++) for (int j = 0; j < w; j++) {
     if (grid[i][j] == '.') continue;
     ans++;
-    queue<int> que;
+    stack<int> que;
     que.push(COTONUM(i, j, w));
     grid[i][j] = '.';
     while (!que.empty()) {
-      pair<int, int> nowco = NUMTOCO(que.front(), w);
+      pair<int, int> nowco = NUMTOCO(que.top(), w);
       grid[nowco.first][nowco.second] = '.';
       que.pop();
       for (int k = 0; k < 8; k++) {
