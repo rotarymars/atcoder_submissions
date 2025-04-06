@@ -1,29 +1,22 @@
-#include <iostream>
+#include<bits/stdc++.h>
 using namespace std;
-using LL = long long;
-string change(LL a) {
-	string ans = "";
-	while (a > 0)
-	{
-		ans.insert(ans.begin(), a % 5 + '0');
-		a /= 5;
-	}
-	for (size_t i = 0; i < ans.size(); i++)
-	{
-		ans[i] = (ans[i] - '0') * 2 + '0';
-	}
-	if (ans != "")
-	{
-		return ans;
-	}
-	else
-	{
-		return "0";
-	}
+
+long long multiply(long long a, long long b){
+  long long ans = 1;
+  for(long long i = 0; i < b; i++){
+    ans *= 10;
+  }
+  return ans;
 }
 
-int main() {
-	LL n;
-	cin >> n;
-	cout << change(--n) << "\n";
+int main(){
+  long int N;
+  cin >> N;
+  long long X = 0;
+  N--;
+  for(int i = 0; i < 19; i++){
+   X = X + multiply(1, i) * (N % 5);
+   N /= 5;
+  }
+  cout << X * 2 << "\n";
 }
