@@ -1,11 +1,13 @@
 #include <iostream>
 using namespace std;
 int main(){
-  int N, a, m = 0;
-  cin >> N;
-  for (int i = 0; i < 2 * N - 1; ++i){
-    cin >> a;
-    m = m ^ a;
+  int n;
+  cin >> n;
+  int ans = 0;
+  for (int i = 0; i < 2 * n - 1; i++){
+    int temp;
+    cin >> temp;
+    ans ^= temp;
   }
-  cout << m << "\n";
+  cout << ans << endl;
 }
