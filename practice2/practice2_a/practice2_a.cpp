@@ -381,14 +381,11 @@ public:
   DSU(int n) : parent(n) { iota(parent.begin(), parent.end(), 0); };
   int leader(int a) {
     if (parent[a] == a) return a;
-    int tmp = DSU::leader(parent[a]);
-    return parent[a] = tmp;
+    return parent[a] = DSU::leader(parent[a]);
   }
   int merge(int a, int b) {
-    int tmp = DSU::leader(a);
-    int temp = DSU::leader(b);
-    parent[tmp] = parent[temp] = tmp;
-    return tmp;
+    parent[DSU::leader(a)] = parent[DSU::leader(b)] = DSU::leader(a);
+    return DSU::leader(a);
     
   }
   vector<vector<int>> to_vector() {
