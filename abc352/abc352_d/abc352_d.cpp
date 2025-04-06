@@ -1,29 +1,23 @@
 #ifndef MAIN_INCLUDED
 #define MAIN_INCLUDED 1
 #include __FILE__
-pair<int, int> op(pair<int, int> a, pair<int, int> b) {
-  return make_pair(min(a.first, b.first), max(a.second, b.second));
-}
-pair<int, int> e() {
-  return make_pair(INT_MAX, 0);
-}
+pair<int, int> op(pair<int, int> a, pair<int, int> b){return make_pair(min(a.first, b.first), max(a.second, b.second));}
+pair<int, int> e(){return make_pair(INT_MAX, 0);}
 signed main() {
   cin.tie(nullptr);
   ios_base::sync_with_stdio(false);
   int n, k;
   cin >> n >> k;
-  vector<pair<int, int>> v(n); // hold p's index
-  v.reserve(n);
-  for (int i = 0; i < n; i++) {
-    int p; cin >> p; --p;
-    v[p] = make_pair(i, i);
+  vector<pair<int, int>> p(n);
+  for (int i = 0; i < n; i++){
+    int tmp;cin >> tmp;tmp--;
+    p[tmp] = move(make_pair(i, i));
   }
-  SEGTREE<pair<int, int>, op, e> seg(v); //hold max and min index for range
   int ans = INT_MAX;
-  for (int i = 0; i < n - k + 1; i++) {
-    auto tmppair = seg.prod(i, i + k);
-    DPln(tmppair);
-    ans = min(ans, tmppair.second - tmppair.first);
+  SEGTREE<pair<int, int>, op, e> seg(p);
+  for (int i = 0; i < n - k + 1; i++){
+    pair<int, int> prodpair=seg.prod(i, i + k);
+    ans = min(ans, prodpair.second - prodpair.first);
   }
   cout << ans << endl;
   return 0;
@@ -56,13 +50,13 @@ using namespace std;
 #endif
 #ifndef LL_MAX
 #define LL_MAX LLONG_MAX
-#endif LL_MAX
+#endif //LL_MAX
 #ifndef LL_MIN
 #define LL_MIN LLONG_MIN
-#endif LL_MIN
+#endif //LL_MIN
 #ifndef ULL_MAX
 #define ULL_MAX ULLONG_MAX
-#endif ULL_MAX
+#endif //ULL_MAX
 namespace {
   using namespace std;
   using UINT = unsigned int;
@@ -275,7 +269,7 @@ bool INRANGE(T l, T r, T sample) {
 
 
 template<class T, class U>
-T::iterator LOWER_BOUND(T& myarray, U target) {
+typename T::iterator LOWER_BOUND(T& myarray, U target) {
   return lower_bound(myarray.begin(), myarray.end(), target);
 }
 template <class T>
