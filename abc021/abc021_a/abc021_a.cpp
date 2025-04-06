@@ -4,10 +4,10 @@
 signed main() {
   cin.tie(nullptr);
   ios_base::sync_with_stdio(false);
-  unsigned int n;
+  int n;
   cin >> n;
-  cout << popcount(n) << "\n";
-  for (int i = 0; i < 10; i++) if (n & (1 << i)) cout << (1 << i) << "\n";
+  cout << n << "\n";
+  while (n--) cout << "1\n";
   return 0;
 }
 #else
