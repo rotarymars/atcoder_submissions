@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 int main(){
-  int N;
-  cin >> N;
-  cout << 24 * N << "\n";
+  int n;
+  cin >> n;
+  cout << 24 * n << endl;
 }
