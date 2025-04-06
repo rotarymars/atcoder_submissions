@@ -4,8 +4,6 @@
 #include <vector>
 
 
-#ifndef ATCODER_DSU_HPP
-#define ATCODER_DSU_HPP 1
 
 #include <algorithm>
 #include <cassert>
@@ -79,7 +77,6 @@ struct dsu {
 
 }  // namespace atcoder
 
-#endif  // ATCODER_DSU_HPP
 
 using namespace std;
 
