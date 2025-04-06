@@ -1,4 +1,4 @@
-#include <iostream>
+#include <stdio.h>
 #ifdef _DEBUG
 #define DP(x) cout << #x << " = " << x << endl
 #else
@@ -7,10 +7,13 @@
 using namespace std;
 signed main()
 {
-    cin.tie(nullptr);
-    ios_base::sync_with_stdio(false);
-    string s;
-    cin>>s;
-    cout<<string(s.size(),'x')<<endl;
+    char tmp;
+    int cnt=0;
+    while(tmp=getc(stdin)){
+        if(tmp!='\n')cnt++;
+        else break;
+    }
+    for(;cnt;cnt--)putc('x',stdout);
+    putc('\n',stdout);
     return 0;
 }
