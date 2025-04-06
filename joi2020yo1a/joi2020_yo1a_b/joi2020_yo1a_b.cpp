@@ -1,16 +1,14 @@
-#include <string>
 #include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
 using namespace std;
 int main(){
-  int n, count = 0;
-  cin >> n;
+  int n;
   string s;
-  cin >> s;
-  for(int i = 0; i < n; ++i){
-    if(s[i] == 'a' || s[i] == 'i' || s[i] == 'u' || s[i] == 'e' || s[i] == 'o'){
-      ++count;
-    }
-  }
-  cout << count << endl;
-  return 0;
+  cin >> n >> s;
+  vector<char> v{'a', 'i', 'u', 'e','o'};
+  int cnt = 0;
+  for (int i = 0; i < n; i++) if (count(v.begin(), v.end(), s[i])) cnt++;
+  cout << cnt << endl;
 }
