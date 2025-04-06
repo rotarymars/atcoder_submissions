@@ -1,11 +1,7 @@
 #include <iostream>
 using namespace std;
-signed main()
-{
-    cin.tie(nullptr);
-    ios_base::sync_with_stdio(false);
-    long double n;
-    cin>>n;
-    cout<<n/(long double)100<<endl;
-    return 0;
+int main(){
+  double a;
+  cin>>a;
+  cout<<a/100.0<<endl;
 }
