@@ -1,1 +1,1 @@
-print(int(input()) * "10" + "1")
+print(int(input())*"10"+"1")
