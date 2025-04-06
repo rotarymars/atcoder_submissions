@@ -14,7 +14,7 @@ int main() {
   auto it = max_element(VALL(a));
   auto itcopy = it;
   //PRINT1D(a);
-  cout << accumulate(a.begin(), it, 0) << endl << accumulate(next(it), a.end(), 0) << endl;
+  cout << accumulate(a.begin(), it, 0) << endl << accumulate(it + 1, a.end(), 0) << endl;
   return 0;
 }
 #else
