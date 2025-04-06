@@ -206,7 +206,7 @@ namespace {
     return REMOVEZERO(ans);
   }
 }
-//ここから読んでね
+
 int main()
 {
   cin.tie(nullptr);
@@ -215,38 +215,37 @@ int main()
   // write code here
   int h, w;
   cin >> h >> w;
-  VS carpet(h);//20行目参照、vector<string>
+  VS carpet(h);
   for (auto& i : carpet)
   {
     cin >> i;
   }
-  VVI move(h, VI(w, 1e9));//手数を管理する。1 <= h, w <= 500 なので 500 * 500 = 250000でもいいが、念のため
-  //1e9 ・・・ 1 * (10 ** 9)
-  move[0][0] = 0;//開始位置の手数を0に初期化
-  VI gridh = { -1, 0, 1, 0 }, gridw = {0, 1, 0, -1};//上下左右の相対的な位置関係を作る
-  vector<int> que = { 0 };//キュー、　次にチェックしたい場所の圧縮した座標を入れる
+  VVI move(h, VI(w, 1e9));
+  move[0][0] = 0;
+  VI gridh = { -1, 0, 1, 0 }, gridw = {0, 1, 0, -1};
+  vector<int> que = { 0 };
   int nowque, nowh, noww;
   while (!que.empty()) {
-    nowque = *que.begin();//現在読み込んでいるキュー
-    que.erase(que.begin());//読み込んだら削除
-    nowh = NUM2CO(nowque, w).first;//読み込んだものを分解
-    noww = NUM2CO(nowque, w).second;//上記同様
-    for (size_t i = 0; i < 4; i++)//上下左右のループを回す
+    nowque = *que.begin();
+    que.erase(que.begin());
+    nowh = NUM2CO(nowque, w).first;
+    noww = NUM2CO(nowque, w).second;
+    for (size_t i = 0; i < 4; i++)
     {
-      if ((nowh + gridh[i] >= 0) && (nowh + gridh[i] < h) && (noww + gridw[i] >= 0) && (noww + gridw[i] < w)) {//vectorのレンジ外のインデックスを渡すのは未定義動作なので、ならないようフィルターをかける
-        if (carpet[nowh + gridh[i]][noww + gridw[i]] != carpet[nowh][noww]) {//上下左右のマスは一つ前のマスとカーペットの色が異なるか否か
-          if (move[nowh + gridh[i]][noww + gridw[i]] > move[nowh][noww] + 1) {//今回のチェックしようとしているものは最短の手かチェック
-            que.push_back(CO2NUM(nowh + gridh[i], noww + gridw[i], w));//最短だったら、次にチェックする点に追加
-            move[nowh + gridh[i]][noww + gridw[i]] = move[nowh][noww] + 1;//手数を書き換え
+      if ((nowh + gridh[i] >= 0) && (nowh + gridh[i] < h) && (noww + gridw[i] >= 0) && (noww + gridw[i] < w)) {
+        if (carpet[nowh + gridh[i]][noww + gridw[i]] != carpet[nowh][noww]) {
+          if (move[nowh + gridh[i]][noww + gridw[i]] > move[nowh][noww] + 1) {
+            que.push_back(CO2NUM(nowh + gridh[i], noww + gridw[i], w));
+            move[nowh + gridh[i]][noww + gridw[i]] = move[nowh][noww] + 1;
           }
         }
       }
     }
   }
   if (move[h - 1][w - 1] != 1e9) {
-    cout << move[h - 1][w - 1] << "\n";//ゴールが1e9でなければ手数を出力
+    cout << move[h - 1][w - 1] << "\n";
   }
-  else {//そうでなければ-1を出力
+  else {
     cout << -1 << "\n";
   }
   return 0;
