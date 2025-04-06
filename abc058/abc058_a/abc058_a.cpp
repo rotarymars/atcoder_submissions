@@ -6,19 +6,17 @@ signed main() {
   ios_base::sync_with_stdio(false);
   int a, b, c;
   cin >> a >> b >> c;
-  if (b - a == c - b)
-  {
-    YES();
-  }
-  else
-  {
-    NO();
-  }
+  b - a == c - b ? YES() : NO();
   return 0;
 }
 #else
 
 using namespace std;
+#ifdef _DEBUG
+#define DPln(x) cout << #x << " = " << x << "\n"
+#else
+#define DPln(x) ;
+#endif
 #include <iostream>
 #include <algorithm>
 #include <string>
@@ -32,6 +30,8 @@ using namespace std;
 #include <iomanip>
 #include <regex>
 #include <numeric>
+#include <bit>
+#include <cassert>
 #if __has_include(<atcoder/all>)
 #include <atcoder/all>
 #endif
@@ -88,6 +88,16 @@ void YES() {
 }
 void NO() {
   cout << "NO\n";
+}
+template<class T = int>
+T I() {
+  T tmp;
+  cin >> tmp;
+  return tmp;
+}
+template<class T>
+T RUD(T a, T b) {
+  return ((a + b - (T)1) / b);
 }
 int COTONUM(const int x, const int y, const int w) {
   return (x * w) + y;
@@ -253,6 +263,26 @@ bool ISPALINDROME(string s) {
   }
   return true;
 }
+bool ISUPPER(char a) {
+  if (a >= 'A' && a <= 'Z')
+  {
+    return true;
+  }
+  return false;
+}
+bool ISLOWER(char a) {
+  if (a >= 'a' && a <= 'z')
+  {
+    return true;
+  }
+  return false;
+}
+char TOUPPER(char a) {
+  return (char)(a - 32);
+}
+char TOLOWER(char a) {
+  return (char)(a + 32);
+}
 template <class T>
 void PRINT1D(T a) {
   cout << "\n";
@@ -300,6 +330,38 @@ void PRINT2DSP(T a) {
     }
     cout << "\n";
   }
+}
+template<class T>
+istream &operator>>(istream& in, vector<T> &v) {
+  for (T& i : v) {
+    in >> i;
+  }
+  return in;
+}
+template<class T>
+ostream &operator<<(ostream& out, vector<T> &v) {
+  for (size_t i = 0; i < v.size(); i++) {
+    if (i == 0) out << v[i];
+    else out << " " << v[i];
+  }
+  return out;
+}
+template<class T, class U>
+istream& operator>>(istream& in, pair<T, U> &p) {
+  in >> p.first >> p.second;
+  return in;
+}
+template<class T, class U>
+ostream& operator<<(ostream& out, pair<T, U> &p) {
+  out << p.first << " " <<  p.second;
+  return out;
+}
+template<class T, class U>
+ostream& operator<<(ostream& out, vector<pair<T, U>> &p) {
+  for (auto& [__FIRST, __SECOND] : p) {
+    out << __FIRST << " " << __SECOND << "\n";
+  }
+  return out;
 }
 #endif
 /*
