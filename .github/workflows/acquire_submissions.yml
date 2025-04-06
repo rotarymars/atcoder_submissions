@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: '0 15 * * *'
 
+permissions:
+  contents: write
+
 jobs:
   acquire_submissions:
     runs-on: ubuntu-latest
