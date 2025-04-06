@@ -1,11 +1,10 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
+#include <cassert>
+#include <vector>
+#include <iostream>
 using namespace std;
 namespace ALG {
-
-// Implement (union by size) + (path compression)
-// Reference:
-// Zvi Galil and Giuseppe F. Italiano,
-// Data structures and algorithms for disjoint set union problems
 struct dsu {
   public:
     dsu() : _n(0) {}
@@ -61,12 +60,10 @@ struct dsu {
 
   private:
     int _n;
-    // root node: -1 * component size
-    // otherwise: parent
     std::vector<int> parent_or_size;
 };
 
-}  // namespace atcoder
+}  
 
 int main(){
   int n, q, t, u, v;
