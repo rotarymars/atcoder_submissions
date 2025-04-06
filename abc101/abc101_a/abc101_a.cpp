@@ -1,29 +1,23 @@
 #ifndef MAIN_INCLUDED
 #define MAIN_INCLUDED 1
 #include __FILE__
-int main() {
+signed main() {
   cin.tie(nullptr);
   ios_base::sync_with_stdio(false);
-  string s;
-  cin >> s;
-  signed ans = 0;
-  for (size_t i = 0; i < 4; i++)
-  {
-    if (s[i] == '+')
-    {
-      ++ans;
-    }
-    else
-    {
-      --ans;
-    }
-  }
-  cout << ans << "\n";
+  int a = 0;
+  for (int i = 0; i < 4; i++) if (getc(stdin) == '+') a++;
+  else a--;
+  cout << a << endl;
   return 0;
 }
 #else
 
 using namespace std;
+#ifdef _DEBUG
+#define DPln(x) cout << #x << " = " << x << "\n"
+#else
+#define DPln(x) ;
+#endif
 #include <iostream>
 #include <algorithm>
 #include <string>
@@ -37,6 +31,8 @@ using namespace std;
 #include <iomanip>
 #include <regex>
 #include <numeric>
+#include <bit>
+#include <cassert>
 #if __has_include(<atcoder/all>)
 #include <atcoder/all>
 #endif
@@ -64,7 +60,9 @@ namespace {
   using VB = vector<bool>;
   using VVB = vector<VB>;
   using PII = pair<int, int>;
+  using PLLLL = pair<LL, LL>;
   using VPII = vector<PII>;
+  using VPLLLL = vector<PLLLL>;
   using SI = set<int>;
   using SC = set<char>;
   using MII = map<int, int>;
@@ -91,6 +89,16 @@ void YES() {
 }
 void NO() {
   cout << "NO\n";
+}
+template<class T = int>
+T I() {
+  T tmp;
+  cin >> tmp;
+  return tmp;
+}
+template<class T>
+T RUD(T a, T b) {
+  return ((a + b - (T)1) / b);
 }
 int COTONUM(const int x, const int y, const int w) {
   return (x * w) + y;
@@ -135,11 +143,11 @@ T LCM(T a, T b) {
 }
 template<class T>
 bool ISPRIME(const T a) {
-  if (a == 1)
+  if (a <= 1)
   {
     return false;
   }
-  for (T i = 2; i * i < a; i++)
+  for (T i = 2; i * i <= a; i++)
   {
     if (a % i == 0)
     {
@@ -148,9 +156,58 @@ bool ISPRIME(const T a) {
   }
   return true;
 }
+template <class T>
+void SORT(T& myarray) {
+  sort(myarray.begin(), myarray.end());
+}
+template<class T>
+vector<T> ENUM_DIVISORS(T n) {
+  vector<T> result;
+  for (T i = 1; i * i <= n; i++)
+  {
+    if (n % i == 0)
+    {
+      result.push_back(i);
+      if (n / i != i)
+      {
+        result.push_back(n / i);
+      }
+    }
+  }
+  SORT(result);
+  return result;
+}
+template <class T>
+vector<pair<T, T>> PRIME_FACTORIZE(T n) {
+  vector<pair<T, T>> result;
+  for (T i = 2; i * i <= n; i++)
+  {
+    if (n % i != 0)
+    {
+      continue;
+    }
+    T ex = 0;
+    while (n % i == 0)
+    {
+      ++ex;
+      n /= i;
+    }
+    result.push_back({ i, ex });
+  }
+  if (n != 1)
+  {
+    result.push_back({ n, 1 });
+  }
+  SORT(result);
+  return result;
+}
 template <class T, class U>
 bool QUICKFIND(T& a, U target) {
-  auto it = lower_bound(VALL(a), target);
+  auto it = lower_bound(a.begin(), a.end(), target);
+  if (it == a.end())
+  {
+    return false;
+  }
   if (*it == target)
   {
     return true;
@@ -164,10 +221,7 @@ template <class T>
 bool INRANGE(T l, T r, T sample) {
   return (sample >= l && sample <= r);
 }
-template <class T>
-void SORT(T& myarray) {
-  sort(myarray.begin(), myarray.end());
-}
+
 
 template<class T, class U>
 T::iterator LOWER_BOUND(T& myarray, U target) {
@@ -176,11 +230,59 @@ T::iterator LOWER_BOUND(T& myarray, U target) {
 template <class T>
 void UNIQUEERASE(T& a) {
   sort(a.begin(), a.end());
-  a.erase(unique(a.begin()), a.end());
+  a.erase(unique(a.begin(), a.end()), a.end());
 }
 template <class T>
 void QUICKUNIQUEERASE(T& a) {
   a.erase(unique(a.begin(), a.end()), a.end());
+}
+template <class T>
+T POWMOD(T a, T b, T c) {
+  T ans = 1;
+  a %= c;
+  while (b != 0)
+  {
+    if (b & 1)
+    {
+      ans *= a;
+    }
+    a *= a;
+    b >>= 1;
+    a %= c;
+    ans %= c;
+  }
+  return ans;
+}
+bool ISPALINDROME(string s) {
+  for (size_t i = 0; i < s.size() / 2; i++)
+  {
+    if (s[i] == s[s.size() - 1 - i])
+    {
+      continue;
+    }
+    return false;
+  }
+  return true;
+}
+bool ISUPPER(char a) {
+  if (a >= 'A' && a <= 'Z')
+  {
+    return true;
+  }
+  return false;
+}
+bool ISLOWER(char a) {
+  if (a >= 'a' && a <= 'z')
+  {
+    return true;
+  }
+  return false;
+}
+char TOUPPER(char a) {
+  return (char)(a - 32);
+}
+char TOLOWER(char a) {
+  return (char)(a + 32);
 }
 template <class T>
 void PRINT1D(T a) {
@@ -229,6 +331,38 @@ void PRINT2DSP(T a) {
     }
     cout << "\n";
   }
+}
+template<class T>
+istream &operator>>(istream& in, vector<T> &v) {
+  for (T& i : v) {
+    in >> i;
+  }
+  return in;
+}
+template<class T>
+ostream &operator<<(ostream& out, vector<T> &v) {
+  for (size_t i = 0; i < v.size(); i++) {
+    if (i == 0) out << v[i];
+    else out << " " << v[i];
+  }
+  return out;
+}
+template<class T, class U>
+istream& operator>>(istream& in, pair<T, U> &p) {
+  in >> p.first >> p.second;
+  return in;
+}
+template<class T, class U>
+ostream& operator<<(ostream& out, pair<T, U> &p) {
+  out << p.first << " " <<  p.second;
+  return out;
+}
+template<class T, class U>
+ostream& operator<<(ostream& out, vector<pair<T, U>> &p) {
+  for (auto& [__FIRST, __SECOND] : p) {
+    out << __FIRST << " " << __SECOND << "\n";
+  }
+  return out;
 }
 #endif
 /*
