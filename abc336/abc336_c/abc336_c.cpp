@@ -1,2 +1,2 @@
-#include<bits/stdc++.h>
-using namespace std;using A = long long;A multiply(A a, A b){A ans=1;for(A i=0;i<b;i++){ans*=10;}return ans;}int main(){A N;cin>>N;A X=0;N--;for(A i=0;i<19;i++){X=X+multiply(1,i)*(N%5);N/=5;}cout<<X*2<<"\n";}
+#include<iostream>
+using namespace std;using A=long long;A n,rs,pt=1;int main(){cin>>n;n--;while(n)rs+=pt*(n%5)*2,n/=5,pt*=10;cout<<rs;}
