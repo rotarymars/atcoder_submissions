@@ -407,13 +407,13 @@ public:
     return -parent_or_size[leader(a)];
   }
 
-  std::vector<std::vector<int>> to_vector() {
-    std::vector<int> leader_buf(_n), group_size(_n);
+  vector<vector<int>> to_vector() {
+    vector<int> leader_buf(_n), group_size(_n);
     for (int i = 0; i < _n; i++) {
       leader_buf[i] = leader(i);
       group_size[leader_buf[i]]++;
     }
-    std::vector<std::vector<int>> result(_n);
+    vector<vector<int>> result(_n);
     for (int i = 0; i < _n; i++) {
       result[i].reserve(group_size[i]);
     }
@@ -421,14 +421,14 @@ public:
       result[leader_buf[i]].push_back(i);
     }
     result.erase(
-        std::remove_if(result.begin(), result.end(),
-          [&](const std::vector<int>& v) { return v.empty(); }),
+        remove_if(result.begin(), result.end(),
+          [&](const vector<int>& v) { return v.empty(); }),
         result.end());
     return result;
   }
 private:
   int _n;
-  std::vector<int> parent_or_size;
+  vector<int> parent_or_size;
 };
 template <class S, S(*op)(S, S), S(*e)()>
 class SEGTREE {
