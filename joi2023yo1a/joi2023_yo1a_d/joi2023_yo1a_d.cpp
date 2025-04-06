@@ -5,7 +5,7 @@ int main(){
   cin >> N;
   for (int i = 0; i < 2 * N - 1; ++i){
     cin >> a;
-    m ^= a;
+    m = m ^ a;
   }
   cout << m << "\n";
 }
