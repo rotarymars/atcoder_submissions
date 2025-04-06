@@ -28,18 +28,18 @@ using namespace std;
 #include <regex>
 #include <numeric>
 #include <cassert>
-#define DPln(x) cout << #x << " = " << x << "\n"
+#if __has_include(<atcoder/all>)
 #include <atcoder/all>
-//<!------------------------------ START OF MY TEMPLATE ------------------------------>
+#endif
 #ifndef LL_MAX
 #define LL_MAX LLONG_MAX
-#endif //LL_MAX
+#endif LL_MAX
 #ifndef LL_MIN
 #define LL_MIN LLONG_MIN
-#endif //LL_MIN
+#endif LL_MIN
 #ifndef ULL_MAX
 #define ULL_MAX ULLONG_MAX
-#endif //ULL_MAX
+#endif ULL_MAX
 namespace {
   using namespace std;
   using UINT = unsigned int;
@@ -219,7 +219,7 @@ bool INRANGE(T l, T r, T sample) {
 
 
 template<class T, class U>
-typename T::iterator LOWER_BOUND(T& myarray, U target) {
+T::iterator LOWER_BOUND(T& myarray, U target) {
   return lower_bound(myarray.begin(), myarray.end(), target);
 }
 template <class T>
