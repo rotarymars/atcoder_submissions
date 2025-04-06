@@ -6,15 +6,14 @@ signed main() {
   ios_base::sync_with_stdio(false);
   int n, q;
   cin >> n >> q;
-  set<int> a;
-  int ans = n;
+  set<int> t;
   for (int i = 0; i < q; i++) {
     int tmp;
     cin >> tmp;
-    if (a.contains(tmp)) a.erase(tmp), ++ans;
-    else ans--, a.insert(tmp);
+    if (t.contains(tmp)) t.erase(tmp);
+    else t.insert(tmp);
   }
-  cout << ans << endl;
+  cout << n - t.size() << endl;
   return 0;
 }
 #else
