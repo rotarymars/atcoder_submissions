@@ -58,8 +58,8 @@ int main()
   // write code here
   int n;
   cin >> n;
-  vector<vector<char>> first_poster(n, vector<char>(n));
-  vector<vector<char>> ans_poster(n, vector<char>(n));
+  VVC first_poster(n, VC(n));
+  VVC ans_poster(n, VC(n));
   for (size_t i = 0; i < n; ++i)
   {
     string memory;
@@ -78,9 +78,9 @@ int main()
       ans_poster[i][j] = memory[j];
     }
   }
-  vector<vector<char>> one_clockwize_poster(n, vector<char>(n));
-  vector<vector<char>> two_clockwize_poster(n, vector<char>(n));
-  vector<vector<char>> one_anticlockwize_poster(n, vector<char>(n));
+  VVC one_clockwize_poster(n, VC(n));
+  VVC two_clockwize_poster(n, VC(n));
+  VVC one_anticlockwize_poster(n, VC(n));
   for (int i = 1; i <= n; ++i) {
     for (int j = 1; j <= n; ++j) {
       one_clockwize_poster[(j)-1][(n - i + 1) - 1] = first_poster[(i)-1][(j)-1];
@@ -128,5 +128,6 @@ int main()
     cout << 2 + two_clockwize_poster_nonsame << "\n";
     return 0;
   }
+  
   return 0;
 }
