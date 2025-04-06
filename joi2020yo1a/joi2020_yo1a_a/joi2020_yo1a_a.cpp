@@ -1,20 +1,13 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 int main(){
-  int a[3];
-  cin >> a[0] >> a[1] >> a[2];
-  int one = 0, two = 0;
-  for(int i = 0; i < 3; ++i){
-    if(a[i] == 1){
-      ++one;
-    }else{
-      ++two;
-    }
+  vector<int> a(2);
+  for (int i = 0; i < 3; i++) {
+    int tmp;
+    cin >> tmp;
+    a[--tmp]++;
   }
-  if(one > two){
-    cout << 1 << endl;
-  }else{
-    cout << 2 << endl;
-  }
-  return 0;
+  if (a[0] > a[1]) cout << "1\n";
+  else cout << "2\n";
 }
