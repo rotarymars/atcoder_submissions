@@ -8,7 +8,7 @@ int main() {
   int n;
   cin >> n;
   set<vector<int>> se;
-  for (; n; n--) {
+  while (n--) {
     int l;
     cin >> l;
     vector<int> v(l);
