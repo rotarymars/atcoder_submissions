@@ -16,7 +16,7 @@ int main() {
   }
   int ans=1;
   for(auto&[_,second]:mp){
-    sort(second.begin(),second.end());
+    // sort(second.begin(),second.end());
     for(int i=0;i<int(second.size());++i){
       for(int j=i+1;j<int(second.size());++j){
         int diff=second[j]-second[i];
