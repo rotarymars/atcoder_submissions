@@ -1,16 +1,15 @@
-#include <iostream>
-#ifdef _DEBUG
-#define DP(x) cout << #x << " = " << x << endl
-#else
-#define DP(x) ;
-#endif
+#include <bits/stdc++.h>
 using namespace std;
-signed main()
-{
-    cin.tie(nullptr);
-    ios_base::sync_with_stdio(false);
-    int la,ra,lb,rb;
-    cin>>la>>ra>>lb>>rb;
-    cout << max(0, min(ra, rb) - max(la, lb)) << endl;
-    return 0;
+
+int main() {
+	int l1, r1, l2, r2;
+	cin >> l1 >> r1 >> l2 >> r2;
+	if (l1 > l2) {
+		swap(l1, l2);
+		swap(r1, r2);
+	}
+	if (r1 <= l2)cout << 0 << endl;
+	else if (r1 <= r2)cout << r1 - l2 << endl;
+	else cout << r2 - l2 << endl;
+	return 0;
 }
