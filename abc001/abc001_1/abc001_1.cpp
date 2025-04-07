@@ -1,6 +1,10 @@
 #include <iostream>
+using namespace std;
 int main() {
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
   int a, b;
-  std::cin >> a >> b;
-  std::cout << a - b << std::endl;
+  cin >> a >> b;
+  cout << a - b << endl;
+  return 0;
 }
