@@ -1,11 +1,11 @@
 #include <iostream>
+#include <iomanip>
 using namespace std;
-signed main()
-{
-    cin.tie(nullptr);
-    ios_base::sync_with_stdio(false);
-    long double n;
-    cin>>n;
-    cout<<n/100<<endl;
-    return 0;
+int main() {
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  long double x;
+  cin>>x;
+  cout<<fixed<<setprecision(10)<<x/100.0<<endl;
+  return 0;
 }
