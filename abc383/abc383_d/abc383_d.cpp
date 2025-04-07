@@ -39,15 +39,13 @@ int main() {
       ++ans;
     }
   }
-  for(long long i=2;true;i++){
+  for(long long i=2;i*i*i*i<n;i++){
     if(!ISPRIME(i))continue;
-    if(i*i*(i+1)*(i+1)>n)break;
-    for(long long j=i+1;true;j++){
+    for(long long j=i+1;j*j<=RUD(n,i)+10;j++){
       if(!ISPRIME(j))continue;
       if(i*i*j*j<=n){
         ++ans;
       }
-      else break;
     }
   }
   cout<<ans<<endl;
