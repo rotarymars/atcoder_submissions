@@ -1,12 +1,17 @@
 #include <iostream>
 using namespace std;
-int main(){
-	int n;
-	cin >> n;
-	string ans;
-	if (n <= 59) ans = "Bad";
-	else if (n >= 60 && n <= 89) ans = "Good";
-	else if (n >= 90 && n <= 99) ans = "Great";
-	else ans = "Perfect";
-	cout << ans << endl;
+int main() {
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  int n;
+  cin >> n;
+  if (n <= 59)
+    cout << "Bad\n";
+  else if (n <= 89)
+    cout << "Good\n";
+  else if (n <= 99)
+    cout << "Great\n";
+  else
+    cout << "Perfect\n";
+  return 0;
 }
