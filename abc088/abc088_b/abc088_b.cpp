@@ -1,24 +1,30 @@
-#include <algorithm>
-#include <functional>
 #include <iostream>
-#include <vector>
+#include <set>
 using namespace std;
-signed main() {
+int main() {
   cin.tie(nullptr);
-  ios_base::sync_with_stdio(false);
+  ios::sync_with_stdio(false);
   int n;
-  cin >> n;
-  vector<int> v(n);
-  for (int &i : v)
-    cin >> i;
-  sort(v.begin(), v.end(), greater<int>());
-  int ans = 0;
-  for (int i = 0; i < n; i++) {
-    if (i % 2)
-      ans -= v[i];
-    else
-      ans += v[i];
+  cin>>n;
+  multiset<int>se;
+  for(int i=0;i<n;i++){
+    int a;
+    cin>>a;
+    se.insert(a);
   }
-  cout << ans << endl;
+  int alice=0,bob=0;
+  int turn=1;
+  while(!se.empty()){
+    if(turn==1){
+      alice+=*prev(se.end());
+      se.erase(prev(se.end()));
+    }
+    else if(turn==-1){
+      bob+=*prev(se.end());
+      se.erase(prev(se.end()));
+    }
+    turn*=-1;
+  }
+  cout<<alice-bob<<endl;
   return 0;
 }
