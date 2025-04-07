@@ -1,13 +1,13 @@
-#include <algorithm>
 #include <iostream>
+#include <algorithm>
 #include <string>
 using namespace std;
-signed main() {
+int main() {
   cin.tie(nullptr);
-  ios_base::sync_with_stdio(false);
+  ios::sync_with_stdio(false);
+  int n,d;
   string s;
-  int n, d;
-  cin >> n >> d >> s;
-  cout << d + count(s.begin(), s.end(), '.') << endl;
+  cin>>n>>d>>s;
+  cout<<d+count(s.begin(),s.end(),'.')<<endl;
   return 0;
 }
