@@ -1,23 +1,22 @@
 #include <iostream>
-#include <algorithm>
-#include <vector>
-#ifdef _DEBUG
-#define DP(x) cout << #x << " = " << x << endl
-#else
-#define DP(x) ;
-#endif
+#include <set>
+#include <iomanip>
 using namespace std;
-signed main()
-{
-    cin.tie(nullptr);
-    ios_base::sync_with_stdio(false);
-    int n;
-    cin>>n;
-    vector<int>v(5*n);
-    for(int&i:v)cin>>i;
-    sort(v.begin(),v.end());
-    long double ans=0;
-    for(int i=n;i-n<3*n;i++)ans+=v[i];
-    cout<<ans/((long double)(3*n))<<endl;
-    return 0;
+int main() {
+  cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  int n;
+  cin>>n;
+  multiset<int>se;
+  for(int i=0;i<5*n;i++){
+    int a;
+    cin>>a;
+    se.insert(a);
+  }
+  for(int i=0;i<n;i++)se.erase(se.begin());
+  for(int i=0;i<n;i++)se.erase(prev(se.end()));
+  long double ans=0;
+  for(auto&i:se)ans+=i;
+  cout<<ans/(long double)(3*n)<<endl;
+  return 0;
 }
