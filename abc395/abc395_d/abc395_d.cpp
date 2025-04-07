@@ -33,8 +33,7 @@ signed main() {
     else{
       int a;
       cin>>a;
-      --a;
-      cout<<boxrealnumber[pigeons[a]]+1<<'\n';
+      cout<<boxrealnumber[pigeons[--a]]+1<<'\n';
     }
   }
   return 0;
