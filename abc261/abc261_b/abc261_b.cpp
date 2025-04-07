@@ -1,30 +1,27 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-signed main() {
+int main() {
   cin.tie(nullptr);
-  ios_base::sync_with_stdio(false);
+  ios::sync_with_stdio(false);
   int n;
-  cin >> n;
-  vector<vector<char>> v(n, vector<char>(n));
-  for (auto &i : v)
-    for (auto &j : i)
-      cin >> j;
-  bool ok = true;
-  for (int i = 0; i < n; i++)
-    for (int j = 0; j < n; j++) {
-      if (i == j)
-        continue;
-      if (v[i][j] == 'W')
-        if (v[j][i] != 'L')
-          ok = false;
-      if (v[i][j] == 'L')
-        if (v[j][i] != 'W')
-          ok = false;
-      if (v[i][j] == 'D')
-        if (v[j][i] != 'D')
-          ok = false;
+  cin>>n;
+  vector<vector<char>>v(n,vector<char>(n));
+  for(auto&i:v){
+    for(auto&j:i){
+      cin>>j;
     }
-  cout << (ok ? "correct" : "incorrect") << endl;
+  }
+  for(int i=0;i<n;++i){
+    for(int j=0;j<n;++j){
+      if(v[i][j]=='W'&&v[j][i]=='L')continue;
+      if(v[i][j]=='L'&&v[j][i]=='W')continue;
+      if(v[i][j]=='D'&&v[j][i]=='D')continue;
+      if(v[i][j]=='-')continue;
+      cout<<"incorrect"<<endl;
+      return 0;
+    }
+  }
+  cout<<"correct"<<endl;
   return 0;
 }
