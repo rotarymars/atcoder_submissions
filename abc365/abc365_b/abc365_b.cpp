@@ -1,18 +1,18 @@
-#include <algorithm>
 #include <iostream>
+#include <algorithm>
 #include <vector>
 using namespace std;
 signed main() {
   cin.tie(nullptr);
-  ios_base::sync_with_stdio(false);
+  ios::sync_with_stdio(false);
   int n;
-  cin >> n;
-  vector<int> v(n);
-  for (int &i : v)
-    cin >> i;
-  vector c = v;
-  sort(v.begin(), v.end());
-  cout << distance(c.begin(), find(c.begin(), c.end(), v[v.size() - 2])) + 1
-       << endl;
+  cin>>n;
+  vector<int>v(n);
+  for(auto&i:v){
+    cin>>i;
+  }
+  vector copy=v;
+  sort(copy.begin(),copy.end());
+  cout<<distance(v.begin(),find(v.begin(),v.end(),*prev(copy.end(),2)))+1<<endl;
   return 0;
 }
