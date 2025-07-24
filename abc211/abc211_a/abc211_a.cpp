@@ -6,6 +6,6 @@ signed main() {
   ios::sync_with_stdio(false);
   long double a,b;
   cin>>a>>b;
-  cout<<fixed<<setprecision(10)<<(a-b)/3.0+b<<endl;
+  cout<<fixed<<setprecision(100)<<(a-b)/3.0+b<<endl;
   return 0;
 }
