@@ -1,27 +1,19 @@
-#include <iostream>
 #include <iomanip>
-#ifdef _DEBUG
-#define DP(x) cout << #x << " = " << x << endl
-#else
-#define DP(x) ;
-#endif
+#include <iostream>
 using namespace std;
-long double f(long double x){
-    return x*x*x+x;
-}
-signed main()
-{
-    cin.tie(nullptr);
-    ios_base::sync_with_stdio(false);
-    long double n;
-    cin>>n;
-    double l=0,r=100,two=2,m;
-    for(int i=0;i<50;i++){
-        m=(l+r)/two;
-        long double v=f(m);
-        if(v>n)r=m;
-        else l=m;
+signed main() {
+  cin.tie(0)->sync_with_stdio(0);
+  long double n;
+  cin >> n;
+  long double left = 0, right = 1000;
+  while (right - left > (long double)0.00001) {
+    long double mid = (left + right) / static_cast<long double>(2);
+    if (mid * mid * mid + mid > n) {
+      right = mid;
+    } else {
+      left = mid;
     }
-    cout<<fixed<<setprecision(10)<<m<<endl;
-    return 0;
+  }
+  cout << fixed << setprecision(10) << left << endl;
+  return 0;
 }
