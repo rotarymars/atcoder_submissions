@@ -1,351 +1,390 @@
-#ifndef MAIN_INCLUDED
-#define MAIN_INCLUDED 1
-#include __FILE__
+#line 1 "/home/rotarymars/projects/personal/atcoder-competitive_programming/template/fastio.hpp"
+#include <cctype>
+#include <cmath>
+#include <cstdint>
+#include <cstdio>
+#include <string>
+#include <type_traits>
+#include <utility>
+#include <vector>
+
+struct FastIO {
+  static constexpr size_t IN_BUF_SIZE = 1 << 20;
+  static constexpr size_t OUT_BUF_SIZE = 1 << 20;
+
+  FILE *in;
+  char *inbuf;
+  size_t in_idx, in_len;
+
+  FILE *out;
+  char *outbuf;
+  size_t out_idx;
+
+  FastIO(FILE *_in = stdin, FILE *_out = stdout)
+      : in(_in), in_idx(0), in_len(0), out(_out), out_idx(0) {
+    inbuf = new char[IN_BUF_SIZE];
+    outbuf = new char[OUT_BUF_SIZE];
+  }
+
+  ~FastIO() {
+    flush();
+    delete[] inbuf;
+    delete[] outbuf;
+  }
+
+  inline int gc() {
+    if (in_idx >= in_len) {
+      in_len = std::fread(inbuf, 1, IN_BUF_SIZE, in);
+      in_idx = 0;
+      if (in_len == 0)
+        return EOF;
+    }
+    return static_cast<unsigned char>(inbuf[in_idx++]);
+  }
+
+  inline bool readCharRaw(char &c) {
+    int x = gc();
+    if (x == EOF)
+      return false;
+    c = static_cast<char>(x);
+    return true;
+  }
+
+  inline bool skipSpaces(int &c) {
+    do {
+      c = gc();
+      if (c == EOF)
+        return false;
+    } while (isspace(c));
+    return true;
+  }
+
+  inline void pc(char c) {
+    if (out_idx >= OUT_BUF_SIZE)
+      flush();
+    outbuf[out_idx++] = c;
+  }
+
+  inline void flush() {
+    if (out_idx) {
+      std::fwrite(outbuf, 1, out_idx, out);
+      out_idx = 0;
+    }
+  }
+
+  // ── Read overloads ──
+
+  bool read(int &i) { return readInt(i); }
+
+  bool read(long &l) { return readInt(l); }
+
+  bool read(long long &i) { return readInt(i); }
+
+  bool read(unsigned int &i) { return readInt(i); }
+
+  bool read(unsigned long &l) { return readInt(l); }
+
+  bool read(unsigned long long &i) { return readInt(i); }
+
+  bool read(double &d) { return readDouble(d); }
+
+  bool read(float &f) { return readDouble(f); }
+
+  bool read(long double &ld) { return readDouble(ld); }
+
+  bool read(char &c) { return readChar(c); }
+
+  bool read(std::string &s) { return readString(s); }
+
+  template <class T> bool read(std::vector<T> &v) { return readVec(v); }
+
+  template <class T, class U> bool read(std::pair<T, U> &p) {
+    return readPair(p);
+  }
+
+  template <typename T1, typename T2, typename... Rest>
+  bool read(T1 &first, T2 &second, Rest &...rest) {
+    return read(first) && read(second, rest...);
+  }
+
+  template <class T> bool readInt(T &out) {
+    int c;
+    if (!skipSpaces(c))
+      return false;
+    bool neg = false;
+    if (c == '-') {
+      neg = true;
+      c = gc();
+    }
+    T val = 0;
+    while ('0' <= c && c <= '9') {
+      val = val * 10 + (c - '0');
+      c = gc();
+    }
+    if constexpr (std::is_signed<T>::value) {
+      out = neg ? -val : val;
+    } else {
+      out = val;
+    }
+    return true;
+  }
+
+  template <class T> bool readDouble(T &out) {
+    int c;
+    if (!skipSpaces(c))
+      return false;
+
+    int sign = 1;
+    if (c == '-') {
+      sign = -1;
+      c = gc();
+    }
+
+    uint64_t ip = 0;
+    while ('0' <= c && c <= '9') {
+      ip = ip * 10 + (c - '0');
+      c = gc();
+    }
+
+    uint64_t fp = 0;
+    int fd = 0;
+    if (c == '.') {
+      c = gc();
+      while ('0' <= c && c <= '9') {
+        if (fd < 18) {
+          fp = fp * 10 + (c - '0');
+          fd++;
+        }
+        c = gc();
+      }
+    }
+
+    int expSign = 1, expVal = 0;
+    if (c == 'e' || c == 'E') {
+      c = gc();
+      if (c == '+' || c == '-') {
+        expSign = (c == '-') ? -1 : 1;
+        c = gc();
+      }
+      while ('0' <= c && c <= '9') {
+        expVal = expVal * 10 + (c - '0');
+        c = gc();
+      }
+    }
+
+    static const double pow10neg[] = {
+        1.0,   1e-1,  1e-2,  1e-3,  1e-4,  1e-5,  1e-6,  1e-7,  1e-8, 1e-9,
+        1e-10, 1e-11, 1e-12, 1e-13, 1e-14, 1e-15, 1e-16, 1e-17, 1e-18};
+
+    double val = (double)ip;
+    if (fd)
+      val += (double)fp * pow10neg[fd];
+    if (expVal)
+      val *= std::pow(10.0, expSign * expVal);
+    out = sign * val;
+    return true;
+  }
+
+  bool readString(std::string &s) {
+    int c;
+    if (!skipSpaces(c))
+      return false;
+    s.clear();
+    do {
+      s.push_back(static_cast<char>(c));
+      c = gc();
+    } while (!isspace(c));
+    return true;
+  }
+
+  bool readLine(std::string &s) {
+    s.clear();
+    char ch;
+    if (!readCharRaw(ch))
+      return false;
+    while (ch == '\n' || ch == '\r') {
+      if (!readCharRaw(ch))
+        return false;
+    }
+    do {
+      s.push_back(ch);
+      if (!readCharRaw(ch))
+        break;
+    } while (ch != '\n' && ch != '\r');
+    return true;
+  }
+
+  bool readChar(char &c) {
+    int x;
+    if (!skipSpaces(x))
+      return false;
+    c = static_cast<char>(x);
+    return true;
+  }
+
+  template <class T> bool readVec(std::vector<T> &v) {
+    for (T &x : v) {
+      if (!read(x))
+        return false;
+    }
+    return true;
+  }
+
+  template <class T, class U> bool readPair(std::pair<T, U> &p) {
+    return read(p.first) && read(p.second);
+  }
+
+  // ── Single-argument write overloads (non-template, exact match) ──
+
+  void write(char c) { writeChar(c); }
+
+  void write(bool b) { pc(b ? '1' : '0'); }
+
+  void write(int i) { writeInt(i); }
+
+  void write(long l) { writeInt(l); }
+
+  void write(long long i) { writeInt(i); }
+
+  void write(unsigned int i) { writeInt(i); }
+
+  void write(unsigned long l) { writeInt(l); }
+
+  void write(unsigned long long i) { writeInt(i); }
+
+  void write(double d) { writeDouble(d); }
+
+  void write(float f) { writeDouble(f); }
+
+  void write(long double ld) { writeDouble(ld); }
+
+  void write(const std::string &s) {
+    for (char c : s)
+      pc(c);
+  }
+
+  void write(const char *s) {
+    while (*s)
+      pc(*s++);
+  }
+
+  template <class T> void write(const std::vector<T> &v) { writeVec(v); }
+
+  template <class T, class U> void write(const std::pair<T, U> &p) {
+    writePair(p);
+  }
+
+  // ── Variadic write: two or more arguments ──
+
+  template <typename T1, typename T2, typename... Rest>
+  void write(const T1 &first, const T2 &second, const Rest &...rest) {
+    write(first);
+    write(second);
+    (write(rest), ...);
+  }
+
+  template <typename... Args> void writeln(const Args &...args) {
+    write(args...);
+    pc('\n');
+  }
+
+  // ── Underlying write helpers ──
+
+  void writeChar(char c) { pc(c); }
+
+  void writeString(const std::string &s, char end = '\0') {
+    for (char c : s)
+      pc(c);
+    if (end)
+      pc(end);
+  }
+
+  template <class T> void writeInt(T x, char end = '\0') {
+    if (x == 0) {
+      pc('0');
+      if (end)
+        pc(end);
+      return;
+    }
+    if constexpr (std::is_signed<T>::value) {
+      if (x < 0) {
+        pc('-');
+        unsigned long long ux =
+            static_cast<unsigned long long>(-(x + 1)) + 1ull;
+        writeUInt(ux, end);
+        return;
+      }
+    }
+    writeUInt(static_cast<unsigned long long>(x), end);
+  }
+
+  void writeUInt(unsigned long long x, char end = '\0') {
+    char s[24];
+    int n = 0;
+    while (x) {
+      s[n++] = char('0' + (x % 10));
+      x /= 10;
+    }
+    while (n--)
+      pc(s[n]);
+    if (end)
+      pc(end);
+  }
+
+  template <class T>
+  void writeDouble(T x, int precision = 10, char end = '\0') {
+    char tmp[128];
+    int n = std::snprintf(tmp, sizeof(tmp), "%.*Lf", precision,
+                          static_cast<long double>(x));
+    for (int i = 0; i < n; ++i)
+      pc(tmp[i]);
+    if (end)
+      pc(end);
+  }
+
+  void writeYesNo(bool b, char end = '\n') {
+    if (b)
+      writeString("Yes", end);
+    else
+      writeString("No", end);
+  }
+
+  template <class T> void writeVec(const std::vector<T> &v, char end = '\0') {
+    for (auto it = v.begin(); it != v.end(); ++it) {
+      write(*it);
+      if (it != v.end() - 1)
+        write(' ');
+    }
+    if (end)
+      pc(end);
+  }
+
+  template <class T, class U>
+  void writePair(const std::pair<T, U> &p, char end = '\0') {
+    write(p.first);
+    write(' ');
+    write(p.second);
+    if (end)
+      pc(end);
+  }
+};
+#line 2 "main.cpp"
+using namespace std;
 signed main() {
-  cin.tie(nullptr);
-  ios_base::sync_with_stdio(false);
+  FastIO io;
   int n, y;
-  cin >> n >> y;
-  for (int i = 0; i <= n; i++) {
-    for (int j = 0; j <= n - i; j++) {
-      if (10000 * i + 5000 * j + 1000 * (n - i - j) == y)
-      {
-        cout << i << " " << j << " " << (n - i - j) << endl;
+  io.read(n, y);
+  y /= 1000;
+  for (int i = 0; i <= n; ++i) {
+    for (int j = 0; j <= n - i; ++j) {
+      constexpr int a = 10, b = 5, c = 1;
+      int k = n - i - j;
+      if (a * i + b * j + c * k == y) {
+        io.writeln(i, ' ', j, ' ', k);
         return 0;
       }
     }
   }
-  cout << "-1 -1 -1\n";
+  io.writeln("-1 -1 -1");
   return 0;
 }
-#else
-
-using namespace std;
-#include <iostream>
-#include <algorithm>
-#include <string>
-#include <vector>
-#include <set>
-#include <map>
-#include <queue>
-#include <stack>
-#include <cmath>
-#include <limits.h>
-#include <iomanip>
-#include <regex>
-#include <numeric>
-#if __has_include(<atcoder/all>)
-#include <atcoder/all>
-#endif
-#ifndef LL_MAX
-#define LL_MAX LLONG_MAX
-#endif LL_MAX
-#ifndef LL_MIN
-#define LL_MIN LLONG_MIN
-#endif LL_MIN
-#ifndef ULL_MAX
-#define ULL_MAX ULLONG_MAX
-#endif ULL_MAX
-namespace {
-  using namespace std;
-  using UINT = unsigned int;
-  using LL = long long;
-  using ULL = unsigned long long;
-  using VI = vector<int>;
-  using VVI = vector<VI>;
-  using VC = vector<char>;
-  using VVC = vector<VC>;
-  using VS = vector<string>;
-  using VLL = vector<LL>;
-  using VVLL = vector<VLL>;
-  using VB = vector<bool>;
-  using VVB = vector<VB>;
-  using PII = pair<int, int>;
-  using PLLLL = pair<LL, LL>;
-  using VPII = vector<PII>;
-  using VPLLLL = vector<PLLLL>;
-  using SI = set<int>;
-  using SC = set<char>;
-  using MII = map<int, int>;
-  using MLLLL = map<LL, LL>;
-  using STI = stack<int>;
-  using STLL = stack<LL>;
-  using QI = queue<int>;
-  using QLL = queue<LL>;
-}
-void Yes() {
-  cout << "Yes\n";
-}
-void No() {
-  cout << "No\n";
-}
-void yes() {
-  cout << "yes\n";
-}
-void no() {
-  cout << "no\n";
-}
-void YES() {
-  cout << "YES\n";
-}
-void NO() {
-  cout << "NO\n";
-}
-int COTONUM(const int x, const int y, const int w) {
-  return (x * w) + y;
-}
-PII NUMTOCO(const int n, const int w) {
-  return { n / w, n % w };
-}
-void VSTOVCC(VS& a, VVC& b) {
-  for (size_t i = 0; i < a.size(); i++)
-  {
-    for (size_t j = 0; j < a[i].size(); j++)
-    {
-      b[i][j] = a[i][j];
-    }
-  }
-}
-void STOVC(string& a, VC& b) {
-  for (size_t i = 0; i < a.size(); i++)
-  {
-    b[i] = a[i];
-  }
-}
-
-template<class T>
-T GCD(T a, T b) {
-  while (a && b)
-  {
-    if (a >= b)
-    {
-      a %= b;
-    }
-    else
-    {
-      b %= a;
-    }
-  }
-  return max(a, b);
-}
-template<class T>
-T LCM(T a, T b) {
-  return a / GCD(a, b) * b;
-}
-template<class T>
-bool ISPRIME(const T a) {
-  if (a <= 1)
-  {
-    return false;
-  }
-  for (T i = 2; i * i <= a; i++)
-  {
-    if (a % i == 0)
-    {
-      return false;
-    }
-  }
-  return true;
-}
-template <class T>
-void SORT(T& myarray) {
-  sort(myarray.begin(), myarray.end());
-}
-template<class T>
-vector<T> ENUM_DIVISORS(T n) {
-  vector<T> result;
-  for (T i = 1; i * i <= n; i++)
-  {
-    if (n % i == 0)
-    {
-      result.push_back(i);
-      if (n / i != i)
-      {
-        result.push_back(n / i);
-      }
-    }
-  }
-  SORT(result);
-  return result;
-}
-template <class T>
-vector<pair<T, T>> PRIME_FACTORIZE(T n) {
-  vector<pair<T, T>> result;
-  for (T i = 2; i * i <= n; i++)
-  {
-    if (n % i != 0)
-    {
-      continue;
-    }
-    T ex = 0;
-    while (n % i == 0)
-    {
-      ++ex;
-      n /= i;
-    }
-    result.push_back({ i, ex });
-  }
-  if (n != 1)
-  {
-    result.push_back({ n, 1 });
-  }
-  SORT(result);
-  return result;
-}
-template <class T, class U>
-bool QUICKFIND(T& a, U target) {
-  auto it = lower_bound(a.begin(), a.end(), target);
-  if (it == a.end())
-  {
-    return false;
-  }
-  if (*it == target)
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-}
-template <class T>
-bool INRANGE(T l, T r, T sample) {
-  return (sample >= l && sample <= r);
-}
-
-
-template<class T, class U>
-T::iterator LOWER_BOUND(T& myarray, U target) {
-  return lower_bound(myarray.begin(), myarray.end(), target);
-}
-template <class T>
-void UNIQUEERASE(T& a) {
-  sort(a.begin(), a.end());
-  a.erase(unique(a.begin(), a.end()), a.end());
-}
-template <class T>
-void QUICKUNIQUEERASE(T& a) {
-  a.erase(unique(a.begin(), a.end()), a.end());
-}
-template <class T>
-T POWMOD(T a, T b, T c) {
-  T ans = 1;
-  a %= c;
-  while (b != 0)
-  {
-    if (b & 1)
-    {
-      ans *= a;
-    }
-    a *= a;
-    b >>= 1;
-    a %= c;
-    ans %= c;
-  }
-  return ans;
-}
-bool ISPALINDROME(string s) {
-  for (size_t i = 0; i < s.size() / 2; i++)
-  {
-    if (s[i] == s[s.size() - 1 - i])
-    {
-      continue;
-    }
-    return false;
-  }
-  return true;
-}
-template <class T>
-void PRINT1D(T a) {
-  cout << "\n";
-  for (size_t i = 0; i < a.size(); i++)
-  {
-    if (i == 0) [[unlikely]]
-      {
-        cout << a[i];
-      }
-    else
-    {
-      cout << " " << a[i];
-    }
-  }
-  cout << "\n";
-}
-template <class T>
-void PRINT2D(T a) {
-  cout << "\n";
-  for (size_t i = 0; i < a.size(); i++)
-  {
-    for (size_t j = 0; j < a[i].size(); j++)
-    {
-      cout << a[i][j];
-    }
-    cout << "\n";
-  }
-}
-
-template <class T>
-void PRINT2DSP(T a) {
-  cout << "\n";
-  for (size_t i = 0; i < a.size(); i++)
-  {
-    for (size_t j = 0; j < a[i].size(); j++)
-    {
-      if (j == 0)[[unlikely]]
-      {
-        cout << a[i][j];
-        }
-      else
-      {
-        cout << " " << a[i][j];
-      }
-    }
-    cout << "\n";
-  }
-}
-#endif
-/*
-                   _ooOoo_
-                  o8888888o
-                  88" . "88
-                  (| -_- |)
-                  O\  =  /O
-               ____/`---'\____
-             .'  \\|     |//  `.
-            /  \\|||  :  |||//  \
-           /  _||||| -:- |||||-  \
-           |   | \\\  -  /// |   |
-           | \_|  ''\---/''  |   |
-           \  .-\__  `-`  ___/-. /
-         ___`. .'  /--.--\  `. . __
-      ."" '<  `.___\_<|>_/___.'  >'"".
-     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
-     \  \ `-.   \_ __\ /__ _/   .-` /  /
-======`-.____`-.___\_____/___.-`____.-'======
-                   `=---='
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        Let's get AC!    Pass System Test!
-*/
-/*        .
-         .8.              ,o888888o.
-        .888.           ,888      `88.
-       .88888.        ,8888         `8.
-      .  88888.       88888
-     .8   88888.      8888
-    .8`8   88888.     8888
-   .8' `8   88888.    8888
-  .8'   `8   88888.   `8888         .8'
- .888888888   88888.     888      ,88'
-.8'       `8   88888.     `88888888'
-*/
-/*
-888888888888             888           8888888888888888888           8888           888888888888     888             888   888888             888888           8888           888888888888     .88888888888
-888       888          888 888                 888                  88  88          888       888      888         888     888 888           888 888          88  88          888       888    88
-888        888       888     888               888                 88    88         888        888       888     888       888  888         888  888         88    88         888        888   88
-888       888      888         888             888                88      88        888       888          888 888         888   888       888   888        88      88        888       888    88
-888888888888     888             888           888               88        88       888888888888             888           888    888     888    888       88        88       888888888888     '8888888888.
-888 888            888         888             888              88888888888888      888 888                  888           888     888   888     888      88888888888888      888 888                    88
-888   888            888     888               888             88            88     888   888                888           888      888 888      888     88            88     888   888                  88
-888     888            888 888                 888            88              88    888     888              888           888       88888       888    88              88    888     888                88
-888       888            888                   888           88                88   888       888            888           888        888        888   88                88   888       888    88888888888'
-*/
